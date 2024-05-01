@@ -1,0 +1,78 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8081
+    description: Generated server url
+paths:
+  /api/v1/stocks:
+    get:
+      tags:
+        - inventory-controller
+      operationId: getAllStocks
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookStock'
+    put:
+      tags:
+        - inventory-controller
+      operationId: updateStock
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookStock'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BookStock'
+  /api/v1/stocks/{bookId}:
+    get:
+      tags:
+        - inventory-controller
+      operationId: getStock
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BookStock'
+components:
+  schemas:
+    BookStock:
+      required:
+        - bookName
+      type: object
+      properties:
+        bookId:
+          type: integer
+          format: int64
+        bookName:
+          type: string
+        bookDescription:
+          type: string
+        availableQuantity:
+          type: integer
+          format: int32
+        price:
+          type: number
+          format: double
